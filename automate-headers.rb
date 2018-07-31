@@ -3,14 +3,14 @@ require 'erb'
 require 'roo'
 
 # => open spreadsheet
-xlsx = Roo::Spreadsheet.open('./test-headers.xlsx')
-xlsx = Roo::Excelx.new("./test-headers.xlsx")
+xlsx = Roo::Spreadsheet.open('./cms/cms.xlsx')
+xlsx = Roo::Excelx.new("./cms/cms.xlsx")
 
 # => find number of headers by finding total rows 
 totalheaders = xlsx.last_row 
 
 # => start a while condition to iterate through each row. x is starting position of data
-x = 3
+x = 2
 until x > totalheaders do
     # => assign local variables to correct data
     @header_title = xlsx.row(x)[0]
@@ -18,11 +18,11 @@ until x > totalheaders do
     @header_copy = xlsx.row(x)[2]
 
     # => render template
-    template = File.read('template.html.erb')
+    template = File.read('template/seo-header-template.html.erb')
     result = ERB.new(template).result(binding)
 
     # => interpolate results to file
-    File.open('headers/' + @header_title + '.html', 'w+') do |f|
+    File.open('build/' + @header_title + '.html', 'w+') do |f|
         f.write result
     end
 
